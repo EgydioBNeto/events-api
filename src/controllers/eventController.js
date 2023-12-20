@@ -1,13 +1,21 @@
 const event = require("../models/Event.js");
 
 class eventController {
-  static addevent = (req, res) => {
+  static addEvent = (req, res) => {
     const { name } = req.body;
     const events = new event({
-      name
+      name,
     });
+    events
+      .save()
+      .then(() => {
+        res.status(201).send({ message: "Event successfully added" });
+      })
+      .catch((err) => {
+        res.status(500).send({ message: err.message || "Error" });
+      });
   };
-  static eventList = (req, res) => {
+  static listEvent = (req, res) => {
     event
       .find()
       .then((events) => {
@@ -17,7 +25,6 @@ class eventController {
         res.status(500).send({ message: err.message || "Error" });
       });
   };
-
 }
 
 module.exports = eventController;
