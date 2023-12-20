@@ -10,6 +10,6 @@ router
   .put("/user/:id", authMiddleware, userController.updateUserById)
   .delete("/user/:id", authMiddleware, userController.deleteUserById)
   .post("/auth", userController.authUser)
-  .get("/user", authMiddleware, userController.listUser);
+  .get("/user", authMiddleware, userController.listUsers);
 
 module.exports = router;
