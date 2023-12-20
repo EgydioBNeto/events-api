@@ -1,4 +1,4 @@
-const user = require("../models/user.js");
+const user = require("../models/User.js");
 
 class userController {
   static addUser = (req, res) => {

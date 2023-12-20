@@ -1,6 +1,6 @@
 const express = require("express");
 const eventController = require("../controllers/eventController.js");
-import authMiddleware from "../middlewares/auth.js";
+const authMiddleware = require("../middlewares/auth");
 
 const router = express.Router();
 

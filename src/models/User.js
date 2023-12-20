@@ -4,6 +4,6 @@ const userSchema = new mongoose.Schema({
   name: { type: String, required: true },
 });
 
-const user = mongoose.model("users", userSchema);
+const users = mongoose.model("users", userSchema);
 
-module.exports = user;
+module.exports = users;

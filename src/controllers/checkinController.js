@@ -1,4 +1,4 @@
-const checkin = require("../models/checkin.js");
+const checkin = require("../models/Checkin.js");
 
 class checkinController {
   static addCheckin = (req, res) => {

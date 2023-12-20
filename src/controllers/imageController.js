@@ -1,4 +1,4 @@
-const image = require("../models/image.js");
+const image = require("../models/Image.js");
 
 class imageController {
   static addImage = (req, res) => {
