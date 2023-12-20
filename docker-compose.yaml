@@ -1,0 +1,36 @@
+version: "3.7"
+
+services:
+  db:
+    container_name: mongodb
+    image: mongo
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
+    networks: 
+      - mongo-compose-network
+    ports:
+      - ${MONGO_PORT}
+    volumes: 
+      - ${DOCKER_COMPOSE_VOLUME}
+  
+  mongo-express:
+    container_name: mongo-express
+    image: mongo-express
+    depends_on:
+      - db
+    networks: 
+      - mongo-compose-network
+    environment:
+      - ME_CONFIG_MONGODB_SERVER=${ME_CONFIG_MONGODB_SERVER}
+      - ME_CONFIG_MONGODB_ADMINUSERNAME=${MONGO_INITDB_ROOT_USERNAME}
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
+      - ME_CONFIG_BASICAUTH_USERNAME=${ME_CONFIG_BASICAUTH_USERNAME}
+      - ME_CONFIG_BASICAUTH_PASSWORD=${ME_CONFIG_BASICAUTH_PASSWORD}
+    ports:
+      - ${ME_PORT}
+    volumes: 
+      - ${DOCKER_COMPOSE_VOLUME}
+networks: 
+    mongo-compose-network:
+      driver: ${DOCKER_COMPOSE_NETWORK_MODE}
