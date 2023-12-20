@@ -4,6 +4,6 @@ const checkinSchema = new mongoose.Schema({
   name: { type: String, required: true },
 });
 
-const checkins = mongoose.model("checkins", checkinSchema);
+const Checkin = mongoose.model("checkins", checkinSchema);
 
-module.exports = checkins;
+module.exports = Checkin;

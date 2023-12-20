@@ -1,12 +1,12 @@
-const checkin = require("../models/Checkin.js");
+const Checkin = require("../models/Checkin.js");
 
 class checkinController {
   static addCheckin = (req, res) => {
     const { name } = req.body;
-    const checkins = new checkin({
+    const checkin = new Checkin({
       name,
     });
-    checkins
+    checkin
       .save()
       .then(() => {
         res.status(201).send({ message: "Checkin successfully added" });
@@ -16,8 +16,7 @@ class checkinController {
       });
   };
   static listCheckin = (req, res) => {
-    checkin
-      .find()
+    Checkin.find()
       .then((checkins) => {
         res.status(200).send(checkins);
       })

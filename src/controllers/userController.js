@@ -1,14 +1,19 @@
-const user = require("../models/User.js");
+const User = require("../models/User.js");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const dotenv = require("dotenv");
+dotenv.config();
+const secretKey = process.env.AUTH_SECRET;
 
 class userController {
   static addUser = (req, res) => {
     const { name, email, password } = req.body;
-    const users = new user({
+    const user = new User({
       name,
       email,
       password,
     });
-    users
+    user
       .save()
       .then(() => {
         res.status(201).send({ message: "User successfully added" });
@@ -19,8 +24,7 @@ class userController {
   };
 
   static listUser = (req, res) => {
-    user
-      .find()
+    User.find()
       .then((users) => {
         res.status(200).send(users);
       })
@@ -31,39 +35,35 @@ class userController {
 
   static listUserById = (req, res) => {
     const id = req.params.id;
-    user.findById(id, (err, user) => {
-      err
-        ? res.status(400).send({
-            message: `Unable to list user ${err}`,
-          })
-        : res.status(200).json(user);
-    });
+    User.findById(id)
+      .then((user) => {
+        res.status(200).send(user);
+      })
+      .catch((err) => {
+        res.status(500).send({ message: err.message || "Error" });
+      });
   };
 
   static updateUserById = (req, res) => {
     const id = req.params.id;
-    user.findByIdAndUpdate(id, { $set: req.body }, (err, user) => {
-      err
-        ? res.status(400).send({
-            message: `Unable to update user ${err}`,
-          })
-        : res.status(200).json({
-            message: `User ${user.name} updated successfully`,
-          });
-    });
+    User.findByIdAndUpdate(id, { $set: req.body })
+      .then((user) => {
+        res.status(200).send({ message: "User successfully updated" });
+      })
+      .catch((err) => {
+        res.status(500).send({ message: err.message || "Error" });
+      });
   };
 
   static deleteUserById = (req, res) => {
     const id = req.params.id;
-    user.findByIdAndDelete(id, (err, user) => {
-      err
-        ? res.status(400).send({
-            message: `Unable to delete user ${err}`,
-          })
-        : res.status(200).json({
-            message: `User ${user.name} deleted successfully`,
-          });
-    });
+    User.findByIdAndDelete(id)
+      .then((user) => {
+        res.status(200).send({ message: "User successfully deleted" });
+      })
+      .catch((err) => {
+        res.status(500).send({ message: err.message || "Error" });
+      });
   };
 
   static authUser = async (req, res) => {
@@ -74,18 +74,10 @@ class userController {
     if (!(await bcrypt.compare(password, user.password)))
       return res.status(400).send({ message: "Incorrect password" });
     user.password = undefined;
-    const token = jwt.sign({ id: user.id }, authConfig.secret, {
+    const token = jwt.sign({ id: user.id }, secretKey, {
       expiresIn: 86400,
     });
     res.send({ user, token });
-  };
-
-  static validateToken = async (req, res) => {
-    const { authorization } = req.headers;
-    if (authorization) {
-      return res.status(200).send({ message: "Valid token" });
-    }
-    return res.status(401).send({ message: "Invalid token" });
   };
 }
 

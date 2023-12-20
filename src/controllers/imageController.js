@@ -1,12 +1,12 @@
-const image = require("../models/Image.js");
+const Image = require("../models/Image.js");
 
 class imageController {
   static addImage = (req, res) => {
     const { name } = req.body;
-    const images = new image({
+    const image = new Image({
       name,
     });
-    images
+    image
       .save()
       .then(() => {
         res.status(201).send({ message: "Image successfully added" });
@@ -16,8 +16,7 @@ class imageController {
       });
   };
   static listImage = (req, res) => {
-    image
-      .find()
+    Image.find()
       .then((images) => {
         res.status(200).send(images);
       })
