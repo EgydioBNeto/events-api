@@ -1,0 +1,7 @@
+node_modules
+.gitignore
+.env_example
+.github
+.pre-commit-config.yaml
+LICENSE
+README.md
