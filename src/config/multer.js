@@ -5,7 +5,6 @@ const path = require("path");
 const crypto = require("crypto");
 const dotenv = require("dotenv");
 dotenv.config();
-const __dirname = path.resolve();
 
 const storageTypes = {
   local: multer.diskStorage({
@@ -15,10 +14,8 @@ const storageTypes = {
     filename: (req, file, cb) => {
       crypto.randomBytes(16, (err, hash) => {
         if (err) cb(err);
-
-        file.image = `${hash.toString("hex")}-${file.originalname}`;
-
-        cb(null, file.image);
+        const filename = `${hash.toString("hex")}-${file.originalname}`;
+        cb(null, filename);
       });
     },
   }),
@@ -31,9 +28,9 @@ const storageTypes = {
       crypto.randomBytes(16, (err, hash) => {
         if (err) cb(err);
 
-        file.image = `${hash.toString("hex")}-${file.originalname}`;
+        const filename = `${hash.toString("hex")}-${file.originalname}`;
 
-        cb(null, file.image);
+        cb(null, filename);
       });
     },
   }),
