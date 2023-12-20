@@ -4,22 +4,24 @@ services:
   db:
     container_name: mongodb
     image: mongo
+    restart: always
     environment:
       - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
       - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
-    networks: 
+      - MONGO_INITDB_DATABASE=${MONGO_INITDB_DATABASE}
+    networks:
       - mongo-compose-network
     ports:
       - ${MONGO_PORT}
-    volumes: 
+    volumes:
       - ${DOCKER_COMPOSE_VOLUME}
-  
+
   mongo-express:
     container_name: mongo-express
     image: mongo-express
     depends_on:
       - db
-    networks: 
+    networks:
       - mongo-compose-network
     environment:
       - ME_CONFIG_MONGODB_SERVER=${ME_CONFIG_MONGODB_SERVER}
@@ -29,8 +31,8 @@ services:
       - ME_CONFIG_BASICAUTH_PASSWORD=${ME_CONFIG_BASICAUTH_PASSWORD}
     ports:
       - ${ME_PORT}
-    volumes: 
+    volumes:
       - ${DOCKER_COMPOSE_VOLUME}
-networks: 
+networks:
     mongo-compose-network:
       driver: ${DOCKER_COMPOSE_NETWORK_MODE}
