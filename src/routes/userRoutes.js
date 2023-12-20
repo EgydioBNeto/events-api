@@ -6,6 +6,11 @@ const router = express.Router();
 
 router
   .get("/user", authMiddleware, userController.listUser)
-  .post("/user", userController.addUser);
+  .post("/user", userController.addUser)
+  .get("/user/:id", authMiddleware, userController.listUserById)
+  .put("/user/:id", authMiddleware, userController.updateUserById)
+  .delete("/user/:id", authMiddleware, userController.deleteUserById)
+  .post("/auth", userController.authUser)
+  .post("/token", userController.validateToken);
 
 module.exports = router;
