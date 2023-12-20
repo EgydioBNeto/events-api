@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 
 dotenv.config();
 
-const connectionString = 'mongodb+srv://devuser:SN3PT1SjUB26gAf3@events-cluster-databse.whfyy33.mongodb.net/?retryWrites=true&w=majority'
+const connectionString = process.env.MONGODB_URL_PROD;
 
 mongoose.connect(connectionString);
 
